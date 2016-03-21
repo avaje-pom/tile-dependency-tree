@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+  <properties>
+    <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
+    <build-helper-maven-plugin.version>1.10</build-helper-maven-plugin.version>
+  </properties>
+
+  <build>
+    <plugins>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${maven-dependency-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>generate-dep-list</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>list</goal>
+            </goals>
+            <configuration>
+              <outputFile>
+                ${project.build.outputDirectory}/META-INF/maven/${project.groupId}/${project.artifactId}/dependency.list
+              </outputFile>
+            </configuration>
+          </execution>
+          <execution>
+            <id>generate-dep-tree</id>
+            <phase>prepare-package</phase>
+            <goals>
+              <goal>tree</goal>
+            </goals>
+            <configuration>
+              <outputFile>
+                ${project.build.outputDirectory}/META-INF/maven/${project.groupId}/${project.artifactId}/dependency.tree
+              </outputFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>${build-helper-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>attach-artifacts</id>
+            <phase>package</phase>
+            <goals>
+              <goal>attach-artifact</goal>
+            </goals>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>
+                    ${project.build.outputDirectory}/META-INF/maven/${project.groupId}/${project.artifactId}/dependency.tree
+                  </file>
+                  <type>tree</type>
+                  <classifier>dependency</classifier>
+                </artifact>
+                <artifact>
+                  <file>
+                    ${project.build.outputDirectory}/META-INF/maven/${project.groupId}/${project.artifactId}/dependency.list
+                  </file>
+                  <type>list</type>
+                  <classifier>dependency</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+
+  </build>
+
+</project>
